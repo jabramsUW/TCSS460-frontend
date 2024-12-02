@@ -73,7 +73,9 @@ export default function AuthRegister({ providers, csrfToken }: any) {
         validationSchema={Yup.object().shape({
           firstname: Yup.string().max(255).required('First Name is required'),
           lastname: Yup.string().max(255).required('Last Name is required'),
-          phone: Yup.string().matches(/^(\d{3})?[- ]?\d{3}[- ]?\d{4}$/, 'Phone number must be valid format: xxx-xxx-xxxx'),
+          phone: Yup.string()
+            .matches(/^(\d{3})?[- ]?\d{3}[- ]?\d{4}$/, 'Phone number must be valid format: xxx-xxx-xxxx')
+            .required('Phone Number is required'),
           email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
           password: Yup.string()
             .required('Password is required')
