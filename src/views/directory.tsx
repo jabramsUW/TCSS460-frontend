@@ -39,7 +39,7 @@ export default function SamplePage() {
     <MainCard title="Welcome to our bookstore!">
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Nicebutton text="Search ALL Books" icon={<SearchIcon />} url="/books/search" />
+          <Nicebutton text="Search All Books" icon={<SearchIcon />} url="/books/search" />
         </Grid>
         <Grid item xs={6}>
           <Nicebutton text="List Series" icon={<BookIcon />} url="/books/by-series" />
