@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 
 // next
+import NextLink from 'next/link';
 import { useRouter } from 'next/navigation';
 import { signOut } from 'next-auth/react';
 
@@ -11,6 +12,7 @@ import ButtonBase from '@mui/material/ButtonBase';
 import CardContent from '@mui/material/CardContent';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Grid from '@mui/material/Grid';
+import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
 import Stack from '@mui/material/Stack';
@@ -125,6 +127,11 @@ export default function Profile() {
                               <Typography variant="body2" color="text.secondary">
                                 {user.email}
                               </Typography>
+                              <NextLink href="/reset-pass" passHref legacyBehavior>
+                                <Link variant="body1" color="primary">
+                                  Change Password
+                                </Link>
+                              </NextLink>
                             </Stack>
                           </Stack>
                         )}

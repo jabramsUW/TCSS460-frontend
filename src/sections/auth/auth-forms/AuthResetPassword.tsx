@@ -25,6 +25,8 @@ import { Formik } from 'formik';
 import IconButton from 'components/@extended/IconButton';
 import AnimateButton from 'components/@extended/AnimateButton';
 
+import axios from 'utils/axios';
+
 import { openSnackbar } from 'api/snackbar';
 import useScriptRef from 'hooks/useScriptRef';
 import { strengthColor, strengthIndicator } from 'utils/password-strength';
@@ -36,6 +38,7 @@ import { StringColorProps } from 'types/password';
 // assets
 import EyeOutlined from '@ant-design/icons/EyeOutlined';
 import EyeInvisibleOutlined from '@ant-design/icons/EyeInvisibleOutlined';
+import { APP_DEFAULT_PATH } from 'config';
 
 // ============================|| STATIC - RESET PASSWORD ||============================ //
 
@@ -65,44 +68,80 @@ export default function AuthResetPassword() {
   return (
     <Formik
       initialValues={{
-        password: '',
+        email: '',
+        currentPassword: '',
+        newPassword: '',
         confirmPassword: '',
         submit: null
       }}
       validationSchema={Yup.object().shape({
-        password: Yup.string().max(255).required('Password is required'),
+        email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
+        currentPassword: Yup.string().max(255).required('Current password is required'),
+        newPassword: Yup.string()
+          .required('New password is required')
+          .test(
+            'different-password',
+            'New password cannot be the same as the current password',
+            (newPassword, yup) => yup.parent.currentPassword !== newPassword
+          )
+          .test('no-leading-trailing-whitespace', 'Password cannot start or end with spaces', (value) => value === value.trim())
+          .min(15, 'Password must be at least 15 characters with a special character and digits adding to 20')
+          .max(255, 'Password must be less than 255 characters'),
         confirmPassword: Yup.string()
           .required('Confirm Password is required')
-          .test('confirmPassword', 'Both Password must be match!', (confirmPassword, yup) => yup.parent.password === confirmPassword)
+          .test('confirmPassword', 'Both passwords must match!', (confirmPassword, yup) => yup.parent.newPassword === confirmPassword)
       })}
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-        try {
-          // password reset
-          if (scriptedRef.current) {
+        axios
+          .post('credentials/changePassword', { email: values.email, oldPassword: values.currentPassword, newPassword: values.newPassword })
+          .then((response) => {
             setStatus({ success: true });
             setSubmitting(false);
-
             openSnackbar({
               open: true,
-              message: 'Successfuly reset password.',
+              message: 'Successfuly changed password.',
               variant: 'alert',
               alert: {
                 color: 'success'
               }
             } as SnackbarProps);
+            router.push(APP_DEFAULT_PATH);
+          })
+          .catch((err: any) => {
+            console.error(err);
+            if (scriptedRef.current) {
+              setStatus({ success: false });
+              setErrors({ submit: err.message });
+              setSubmitting(false);
+            }
+          });
+        // try {
+        //   // password reset
+        //   if (scriptedRef.current) {
+        //     setStatus({ success: true });
+        //     setSubmitting(false);
 
-            setTimeout(() => {
-              router.push('/login');
-            }, 1500);
-          }
-        } catch (err: any) {
-          console.error(err);
-          if (scriptedRef.current) {
-            setStatus({ success: false });
-            setErrors({ submit: err.message });
-            setSubmitting(false);
-          }
-        }
+        //     openSnackbar({
+        //       open: true,
+        //       message: 'Successfuly reset password.',
+        //       variant: 'alert',
+        //       alert: {
+        //         color: 'success'
+        //       }
+        //     } as SnackbarProps);
+
+        //     setTimeout(() => {
+        //       router.push('/login');
+        //     }, 1500);
+        //   }
+        // } catch (err: any) {
+        //   console.error(err);
+        //   if (scriptedRef.current) {
+        //     setStatus({ success: false });
+        //     setErrors({ submit: err.message });
+        //     setSubmitting(false);
+        //   }
+        // }
       }}
     >
       {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
@@ -110,14 +149,69 @@ export default function AuthResetPassword() {
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <Stack spacing={1}>
-                <InputLabel htmlFor="password-reset">Password</InputLabel>
+                <InputLabel htmlFor="email-reset">Email Address</InputLabel>
                 <OutlinedInput
                   fullWidth
-                  error={Boolean(touched.password && errors.password)}
-                  id="password-reset"
+                  error={Boolean(touched.email && errors.email)}
+                  id="email-reset"
+                  type="email"
+                  value={values.email}
+                  name="email"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  placeholder="Enter user email"
+                />
+              </Stack>
+              {touched.email && errors.email && (
+                <FormHelperText error id="helper-text-password-reset-email">
+                  {errors.email}
+                </FormHelperText>
+              )}
+            </Grid>
+            <Grid item xs={12}>
+              <Stack spacing={1}>
+                <InputLabel htmlFor="password-reset-current">Current Password</InputLabel>
+                <OutlinedInput
+                  fullWidth
+                  error={Boolean(touched.currentPassword && errors.currentPassword)}
+                  id="password-reset-current"
                   type={showPassword ? 'text' : 'password'}
-                  value={values.password}
-                  name="password"
+                  value={values.currentPassword}
+                  name="currentPassword"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                        color="secondary"
+                      >
+                        {showPassword ? <EyeOutlined /> : <EyeInvisibleOutlined />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  placeholder="Enter current password"
+                />
+              </Stack>
+              {touched.currentPassword && errors.currentPassword && (
+                <FormHelperText error id="helper-text-password-reset">
+                  {errors.currentPassword}
+                </FormHelperText>
+              )}
+            </Grid>
+            <Grid item xs={12}>
+              <Stack spacing={1}>
+                <InputLabel htmlFor="password-reset-new">New Password</InputLabel>
+                <OutlinedInput
+                  fullWidth
+                  error={Boolean(touched.newPassword && errors.newPassword)}
+                  id="password-reset-new"
+                  type={showPassword ? 'text' : 'password'}
+                  value={values.newPassword}
+                  name="newPassword"
                   onBlur={handleBlur}
                   onChange={(e) => {
                     handleChange(e);
@@ -136,12 +230,12 @@ export default function AuthResetPassword() {
                       </IconButton>
                     </InputAdornment>
                   }
-                  placeholder="Enter password"
+                  placeholder="Enter new password"
                 />
               </Stack>
-              {touched.password && errors.password && (
+              {touched.newPassword && errors.newPassword && (
                 <FormHelperText error id="helper-text-password-reset">
-                  {errors.password}
+                  {errors.newPassword}
                 </FormHelperText>
               )}
               <FormControl fullWidth sx={{ mt: 2 }}>
@@ -190,6 +284,11 @@ export default function AuthResetPassword() {
                   Reset Password
                 </Button>
               </AnimateButton>
+            </Grid>
+            <Grid item xs={12}>
+              <Button disableElevation fullWidth size="large" onClick={() => router.push(APP_DEFAULT_PATH)}>
+                Cancel
+              </Button>
             </Grid>
           </Grid>
         </form>

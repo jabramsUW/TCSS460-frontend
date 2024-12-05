@@ -15,7 +15,7 @@ export default function ResetPassword() {
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Stack sx={{ mb: { xs: -0.5, sm: 0.5 } }} spacing={1}>
-            <Typography variant="h3">Reset Password</Typography>
+            <Typography variant="h3">Change Password</Typography>
             <Typography color="secondary">Please choose your new password</Typography>
           </Stack>
         </Grid>
@@ -24,5 +24,23 @@ export default function ResetPassword() {
         </Grid>
       </Grid>
     </AuthWrapper>
+    // <Container component="main" maxWidth="xs">
+    //   <Box
+    //     sx={{
+    //       marginTop: 8,
+    //       display: 'flex',
+    //       flexDirection: 'column',
+    //       alignItems: 'center'
+    //     }}
+    //   >
+    //     <Typography component="h1" variant="h5">
+    //       Change Password
+    //     </Typography>
+
+    //     <Box sx={{ mt: 1 }}>
+    //       <AuthResetPassword />
+    //     </Box>
+    //   </Box>
+    // </Container>
   );
 }
