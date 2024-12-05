@@ -32,7 +32,7 @@ const pages: NavItemType = {
           title: <FormattedMessage id="search-book" />,
           type: 'item',
           url: '/books/views',
-          icon: icons.BookIcon
+          icon: icons.SearchIcon
         },
         {
           id: 'Search-all-books',

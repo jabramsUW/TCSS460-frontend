@@ -7,7 +7,7 @@ import { Container, TextField, Button, Typography, Card, CardContent, CardMedia,
 const API_URL = 'http://localhost:4000/book/title';
 
 type Book = {
-  book_isbn: number;
+  isbn13: string | null;
   authors: string;
   publication: number;
   title: string;
@@ -21,10 +21,13 @@ type Book = {
     rating_5: number;
   };
   series_info?: {
-    name: string;
-    position: number;
+    name: string | null;
+    position: number | null;
   };
-  image_url?: string;
+  icons?: {
+    large: string;
+    small: string;
+  };
 };
 
 export default function BookSearch() {
@@ -101,14 +104,14 @@ export default function BookSearch() {
 
       {book && (
         <Card style={{ marginTop: '40px' }}>
-          <Grid container spacing={2}>
-            {book.image_url && (
+          <Grid container spacing={2} direction="row-reverse">
+            {book.icons && book.icons.large && (
               <Grid item xs={12} sm={4}>
                 <CardMedia
                   component="img"
-                  image={book.image_url}
+                  image={book.icons.large}
                   alt={book.title}
-                  style={{ height: '100%', objectFit: 'cover' }}
+                  style={{ height: '100%', objectFit: 'cover', padding: '10px'}}
                 />
               </Grid>
             )}
@@ -118,7 +121,7 @@ export default function BookSearch() {
                   {book.title}
                 </Typography>
                 <Typography variant="body1">
-                  <strong>ISBN:</strong> {book.book_isbn}
+                  <strong>ISBN:</strong> {book.isbn13 || 'Not available'}
                 </Typography>
                 <Typography variant="body1">
                   <strong>Authors:</strong> {book.authors}
@@ -129,10 +132,10 @@ export default function BookSearch() {
                 {book.series_info && (
                   <div>
                     <Typography variant="body1">
-                      <strong>Series Name:</strong> {book.series_info.name}
+                      <strong>Series Name:</strong> {book.series_info.name ? book.series_info.name : 'Not available'}
                     </Typography>
                     <Typography variant="body1">
-                      <strong>Series Position:</strong> {book.series_info.position}
+                      <strong>Series Position:</strong> {book.series_info.position ? book.series_info.position : 'Not available'}
                     </Typography>
                   </div>
                 )}
