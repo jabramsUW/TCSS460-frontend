@@ -42,10 +42,10 @@ export default function SamplePage() {
           <Nicebutton text="Search All Books" icon={<SearchIcon />} url="/books/search" />
         </Grid>
         <Grid item xs={6}>
-          <Nicebutton text="List Series" icon={<BookIcon />} url="/books/by-series" />
+          <Nicebutton text="List Series" icon={<LibraryBooksIcon />} url="/books/by-series" />
         </Grid>
         <Grid item xs={6}>
-          <Nicebutton text="Add New Book" icon={<LibraryBooksIcon />} url="/books/create" />
+          <Nicebutton text="Add New Book" icon={<BookIcon />} url="/books/create" />
         </Grid>
       </Grid>
     </MainCard>
