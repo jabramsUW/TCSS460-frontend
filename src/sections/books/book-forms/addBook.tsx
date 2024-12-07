@@ -428,7 +428,7 @@ export default function SendBook({
               <Grid item xs={12}>
                 <AnimateButton>
                   <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="primary">
-                    SEND!
+                    Add Book!
                   </Button>
                 </AnimateButton>
               </Grid>

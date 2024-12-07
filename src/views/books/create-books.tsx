@@ -4,11 +4,11 @@ import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
-import SendIcon from '@mui/icons-material/Send';
+import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Alert } from '@mui/material';
+import { Alert, Divider } from '@mui/material';
 
 // Project imports
 import SendBook from 'sections/books/book-forms/addBook';
@@ -57,18 +57,19 @@ export default function BookSend() {
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: 3,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center'
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <SendIcon />
+            <LibraryAddIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Add Book
+            Add a New Book
           </Typography>
+          <Divider sx={{ marginY: 3 }} />
 
           <Box sx={{ mt: 1 }}>
             <SendBook onSuccess={onSuccess} onError={onError} />
