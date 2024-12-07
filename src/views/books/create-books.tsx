@@ -53,7 +53,7 @@ export default function BookSend() {
           {alert.alertMessage}
         </Alert>
       )}
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="md">
         <CssBaseline />
         <Box
           sx={{
