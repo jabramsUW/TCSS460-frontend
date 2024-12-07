@@ -1,6 +1,5 @@
 // project import
 import other from './other';
-import pages from './messages';
 import bookPages from './books';
 import mainpage from './main-page';
 
@@ -10,7 +9,7 @@ import { NavItemType } from 'types/menu';
 // ==============================|| MENU ITEMS ||============================== //
 
 const menuItems: { items: NavItemType[] } = {
-  items: [mainpage, pages, bookPages, other]
+  items: [mainpage, bookPages, other]
 };
 
 export default menuItems;
