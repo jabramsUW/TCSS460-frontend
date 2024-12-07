@@ -10,7 +10,7 @@ export function BookListItem({ book, onDelete }: { book: IBook; onDelete: (isbn:
   return (
     <ListItem
       secondaryAction={
-        <IconButton edge="end" aria-label="delete" onClick={() => onDelete(book.isbn)}>
+        <IconButton edge="end" aria-label="delete" onClick={() => onDelete(book.isbn13)}>
           <DeleteIcon />
         </IconButton>
       }
