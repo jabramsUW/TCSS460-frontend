@@ -30,9 +30,9 @@ const pages: NavItemType = {
       children: [
         {
           id: 'Find-a-book',
-          title: <FormattedMessage id="search-book" />,
+          title: <FormattedMessage id="search-title" />,
           type: 'item',
-          url: '/books/view',
+          url: '/books/search/title',
           icon: icons.SearchIcon
         },
         {
