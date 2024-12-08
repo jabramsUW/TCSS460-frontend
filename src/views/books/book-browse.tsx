@@ -50,11 +50,20 @@ export default function BooksBrowse() {
       .catch((error) => console.error(error));
   }, []);
 
+  const handleDelete = (isbn: number) => {
+    axios
+      .delete('book/isbn?isbn=' + isbn)
+      .then((response) => {
+        response.status == 200 && setBooks(books.filter((entry) => entry.isbn13 !== isbn));
+      })
+      .catch((error) => console.error(error));
+  };
+
   const currentPageBooks = books
       .slice(offset, offset + perPage)
       .map((bk, index, books) => (
         <React.Fragment key={'bk list item: ' + index}>
-          <BookListItem book={bk} />
+          <BookListItem book={bk} onDelete={handleDelete} />
           {index < books.length - 1 && <Divider variant="middle" component="li" />}
         </React.Fragment>
       ));

@@ -26,7 +26,6 @@ export default function BooksBySeries() {
       .get('book/series/' + seriesName)
       .then((response) => {
         setBooks(response.data.entries);
-        // console.dir(response.data);
       })
       .catch((error) => console.error(error));
   }, []);
@@ -35,8 +34,7 @@ export default function BooksBySeries() {
     axios
       .delete('book/isbn?isbn=' + isbn)
       .then((response) => {
-        response.status == 200 && setBooks(books.filter((entry) => entry.isbn !== isbn));
-        // console.dir(response.status);
+        response.status == 200 && setBooks(books.filter((entry) => entry.isbn13 !== isbn));
       })
       .catch((error) => console.error(error));
   };
