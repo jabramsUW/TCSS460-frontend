@@ -13,11 +13,13 @@ export interface IBook {
     rating_5: number;
   };
   icons: {
-    large: URL;
-    small: URL;
-  }
+    large: string;
+    small: string;
+  };
   series_info?: {
     name: string;
     position: number;
   };
 }
+
+export const avgRating = (bk: IBook) => bk.ratings.average;
