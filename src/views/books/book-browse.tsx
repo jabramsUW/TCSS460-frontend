@@ -74,9 +74,11 @@ export default function BooksBrowse() {
 
     const sortedItems = [...books].sort((a, b) => {
       if (a[newKey] !== undefined && b[newKey] !== undefined) {
-        if (a[newKey] < b[newKey]) {
+        const valueA = a[newKey] as string;
+        const valueB = b[newKey] as string;
+        if (valueA < valueB) {
           return sortOrder === 'asc' ? -1 : 1;
-        } else if (a[newKey] > b[newKey]) {
+        } else if (valueA > valueB) {
           return sortOrder === 'asc' ? 1 : -1;
         }
       }
