@@ -18,8 +18,7 @@ import {
   DialogContentText,
   DialogActions,
   Snackbar,
-  Box,
-  LinearProgress
+  Box
 } from '@mui/material';
 
 const API_URL = 'http://localhost:4000/book/title';
@@ -58,7 +57,6 @@ export default function BookSearch() {
   const [feedbackMessage, setFeedbackMessage] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [progress, setProgress] = useState(0);
 
   const handleSearch = async () => {
     if (!searchTerm) {
@@ -127,17 +125,6 @@ export default function BookSearch() {
         setFeedbackMessage('Rating submitted successfully!');
         setIsSuccess(true);
         setSnackbarOpen(true);
-
-        let timer = 0;
-        const interval = setInterval(() => {
-          timer += 20;
-          setProgress((prev) => prev + 2);
-          if (timer >= 5000) {
-            clearInterval(interval);
-            setSnackbarOpen(false);
-            setProgress(0);
-          }
-        }, 100);
 
         // Fetch updated data from the backend
         const updatedResponse = await axios.get(API_URL, {
@@ -278,12 +265,16 @@ export default function BookSearch() {
         </DialogActions>
       </Dialog>
 
-      <Snackbar open={snackbarOpen} onClose={() => setSnackbarOpen(false)} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={5000}
+        onClose={() => setSnackbarOpen(false)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
         <Box position="relative" width="100%">
           <Alert onClose={() => setSnackbarOpen(false)} severity={isSuccess ? 'success' : 'error'} sx={{ width: '100%' }}>
             {feedbackMessage}
           </Alert>
-          <LinearProgress variant="determinate" value={progress} style={{ position: 'absolute', bottom: 0, left: 0, width: '100%' }} />
         </Box>
       </Snackbar>
     </Container>
