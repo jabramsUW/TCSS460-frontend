@@ -7,6 +7,7 @@ import CircularLoader from 'components/CircularLoader';
 import Link from 'next/link';
 import MainCard from 'components/MainCard';
 import { useRouter } from 'next/navigation'; // Use next/navigation for routing
+import RatingsSliders from 'components/RatingSliders';
 
 interface BookInfoProps {
   isbn: string;
@@ -112,17 +113,11 @@ const BookInfo: React.FC<BookInfoProps> = ({ isbn }) => {
                   </p>
                 )}
                 <div>
+                  <strong>Rating:</strong> {bookData?.ratings.average} <br />
                   <Rating name="bookRating" value={bookData?.ratings.average} precision={0.2} size="medium" readOnly />
-                  <br /> ({bookData?.ratings.count} reviews)
+                  <br /> <small>({bookData?.ratings.count} reviews)</small>
                 </div>
-                <strong>Rating:</strong> {bookData?.ratings.average}
-                <div>
-                  {bookData?.ratings.rating_5} 5* reviews <br />
-                  {bookData?.ratings.rating_4} 4* reviews <br />
-                  {bookData?.ratings.rating_3} 3* reviews <br />
-                  {bookData?.ratings.rating_2} 2* reviews <br />
-                  {bookData?.ratings.rating_1} 1* reviews
-                </div>
+                {bookData && <RatingsSliders book={bookData} />}
               </p>
             </div>
           </div>
