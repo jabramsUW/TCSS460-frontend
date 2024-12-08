@@ -1,7 +1,7 @@
-import BooksBySeries from 'views/books/books-by-series';
+import SeriesBrowse from 'views/books/series-browse';
 
 // ==============================|| PAGE ||============================== //
 
-export default function BooksBySeriesViewPage() {
-  return <BooksBySeries />;
+export default function SeriesBrowseViewPage() {
+  return <SeriesBrowse />;
 }
