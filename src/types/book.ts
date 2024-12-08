@@ -1,8 +1,8 @@
 export interface IBook {
-  isbn: number;
+  isbn13: number;
   authors: string;
-  title: string;
   publication: number;
+  title: string;
   ratings: {
     average: number;
     count: number;
@@ -12,8 +12,14 @@ export interface IBook {
     rating_4: number;
     rating_5: number;
   };
+  icons: {
+    large: string;
+    small: string;
+  };
   series_info?: {
     name: string;
     position: number;
   };
 }
+
+export const avgRating = (bk: IBook) => bk.ratings.average;
