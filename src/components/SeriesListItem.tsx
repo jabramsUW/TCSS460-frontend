@@ -4,18 +4,17 @@ import { IconButton, ListItem, ListItemAvatar, ListItemText } from '@mui/materia
 
 export function SeriesListItem({ series, onDelete }: { series: String; onDelete: (seriesName: String) => void }) {
   return (
-    
-      <ListItem
-        secondaryAction={
-          <IconButton edge="end" aria-label="delete" onClick={() => onDelete(series)}>
-            <DeleteIcon />
-          </IconButton>
-        }
-      >
-        <a href={"/books/search/series?name=" + series}>
-          <ListItemText primary={<a href={"/books/search/series?name=" + series}>{series}</a>} />
-        </a>
-      </ListItem>
+    <ListItem
+      secondaryAction={
+        <IconButton edge="end" aria-label="delete" onClick={() => onDelete(series)}>
+          <DeleteIcon />
+        </IconButton>
+      }
+    >
+      <a href={'/books/search/series?name=' + series}>
+        <ListItemText primary={<a href={'/books/search/series?name=' + series}>{series}</a>} />
+      </a>
+    </ListItem>
   );
 }
 
