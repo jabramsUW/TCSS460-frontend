@@ -1,7 +1,7 @@
-import BooksBrowse from 'views/books/book-browse';
+import BookSearch from 'views/books/book-search';
 
 // ==============================|| PAGE ||============================== //
 
-export default function BooksBrowseViewPage() {
-  return <BooksBrowse />;
+export default function BookSearchViewPage() {
+  return <BookSearch />;
 }
