@@ -28,6 +28,13 @@ const pages: NavItemType = {
       icon: icons.MessageOutlined,
       children: [
         {
+          id: 'Find-a-book',
+          title: <FormattedMessage id="search-book" />,
+          type: 'item',
+          url: '/books/views',
+          icon: icons.SearchIcon
+        },
+        {
           id: 'Search-all-books',
           title: <FormattedMessage id="search-all" />,
           type: 'item',
