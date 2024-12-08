@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import getRandomBook from 'utils/randomBook';
 import Rating from '@mui/material/Rating';
-
+import CircularLoader from './CircularLoader';
 interface Book {
   isbn13: string;
   authors: string;
@@ -53,7 +53,7 @@ const RandomBook = () => {
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
               width: '100%',
-              marginBottom: '10px'
+              margin: '0px'
             }}
             title={randomBook.title} // Tooltip for the full title
           >
@@ -67,6 +67,7 @@ const RandomBook = () => {
               src={randomBook.icons.large}
               alt={`${randomBook.title} cover`}
               style={{
+                minWidth: '150px',
                 width: '150px',
                 height: 'auto',
                 marginRight: '20px',
@@ -76,24 +77,25 @@ const RandomBook = () => {
             />
 
             {/* Text Details */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               <p style={{ margin: 0 }}>
                 <strong>Author:</strong> {randomBook.authors}
               </p>
               <p style={{ margin: 0 }}>
-                <strong>Publication Year:</strong> {randomBook.publication}
+                <strong>Year:</strong> {randomBook.publication}
               </p>
               <p style={{ margin: 0 }}>
-                <strong>Average Rating:</strong> {randomBook.ratings.average} ({randomBook.ratings.count} reviews)
+                <strong>Rating:</strong> {randomBook.ratings.average}
                 <div>
-                  <Rating name="bookRating" value={randomBook.ratings.average} precision={0.2} size="small" readOnly />
+                  <Rating name="bookRating" value={randomBook.ratings.average} precision={0.2} size="medium" readOnly />
+                  <br /> ({randomBook.ratings.count} reviews)
                 </div>
               </p>
             </div>
           </div>
         </>
       ) : (
-        <p>Loading random book...</p>
+        <CircularLoader />
       )}
     </div>
   );
