@@ -21,13 +21,7 @@ import AnimateButton from 'components/@extended/AnimateButton';
 
 import axios from 'utils/axios';
 
-export default function SendBook({  
-  onSuccess,
-  onError
-}: {
-  onSuccess: () => void;
-  onError: (msg: string) => void;
-}) {
+export default function SendBook({ onSuccess, onError }: { onSuccess: () => void; onError: (msg: string) => void }) {
   return (
     <>
       <Formik
@@ -48,39 +42,40 @@ export default function SendBook({
 
           submit: null
         }}
-
         validationSchema={Yup.object().shape({
           isbn13: Yup.number().required('ISBN is required'),
           publication_year: Yup.number().min(1600).max(3000).required('Publication Year is required (1600-3000)'),
           title: Yup.string().max(255).required('Title is required'),
           image_url: Yup.string(),
           small_url: Yup.string(),
-          authors: Yup.string().required('Authors is required (comma-separated)').test('is-valid-authors', 'Authors must be a comma-separated list of strings', (value) => {
-          if (!value) return false; // Field is required
-          const authorsArray = value.split(',').map((author) => author.trim());
-          return authorsArray.every((author) => author.length > 0); // Ensure all names are non-empty
-          }),
+          authors: Yup.string()
+            .required('Authors is required (comma-separated)')
+            .test('is-valid-authors', 'Authors must be a comma-separated list of strings', (value) => {
+              if (!value) return false; // Field is required
+              const authorsArray = value.split(',').map((author) => author.trim());
+              return authorsArray.every((author) => author.length > 0); // Ensure all names are non-empty
+            }),
           series_name: Yup.string(),
           series_pos: Yup.number(),
           rating_1: Yup.number().min(0).default(0),
           rating_2: Yup.number().min(0).default(0),
           rating_3: Yup.number().min(0).default(0),
           rating_4: Yup.number().min(0).default(0),
-          rating_5: Yup.number().min(0).default(0),
-
+          rating_5: Yup.number().min(0).default(0)
         })}
         onSubmit={(values, { setErrors, setSubmitting, setValues, resetForm }) => {
           console.dir(values);
-           
+
           //helper for arrays for author
           const authorsArray = values.authors.split(',').map((author) => author.trim());
-          const seriesName = values.series_name || "N/A";
+          const seriesName = values.series_name || 'N/A';
           const seriesNumber = values.series_pos || 0;
-          const imageURL = values.image_url || "https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png";
-          const smallImageURL = values.small_url || "https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png";
+          const imageURL = values.image_url || 'https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png';
+          const smallImageURL =
+            values.small_url || 'https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png';
 
           axios
-            .post('/book', { 
+            .post('/book', {
               isbn13: values.isbn13,
               publication_year: values.publication_year,
               title: values.title,
@@ -94,8 +89,7 @@ export default function SendBook({
               rating_3: values.rating_3,
               rating_4: values.rating_4,
               rating_5: values.rating_5
-          
-               })
+            })
             .then((response) => {
               setSubmitting(false);
               resetForm({
@@ -113,7 +107,7 @@ export default function SendBook({
                   rating_3: 0,
                   rating_4: 0,
                   rating_5: 0,
-                  
+
                   submit: null
                 }
               });
@@ -129,9 +123,7 @@ export default function SendBook({
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleSubmit}>
-            
             <Grid container spacing={1}>
-
               <Grid item xs={6}>
                 <Stack spacing={1}>
                   <InputLabel htmlFor="isbn13">Book ISBN</InputLabel>
@@ -145,7 +137,6 @@ export default function SendBook({
                     onBlur={handleBlur}
                     onChange={handleChange}
                     placeholder="Enter the ISBN (13 digits)"
-                
                   />
                 </Stack>
                 {touched.isbn13 && errors.isbn13 && (
@@ -154,7 +145,7 @@ export default function SendBook({
                   </FormHelperText>
                 )}
               </Grid>
-              
+
               <Grid item xs={6}>
                 <Stack spacing={1}>
                   <InputLabel htmlFor="publication_year">Published Year (1600~3000)</InputLabel>
@@ -418,7 +409,6 @@ export default function SendBook({
                   </FormHelperText>
                 )}
               </Grid>
-
 
               {errors.submit && (
                 <Grid item xs={12}>

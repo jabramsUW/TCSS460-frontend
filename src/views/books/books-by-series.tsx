@@ -18,9 +18,9 @@ const defaultTheme = createTheme();
 
 export default function BooksBySeries() {
   const [books, setBooks] = React.useState<IBook[]>([]);
-  const searchParams = new URLSearchParams(document.location.search)
+  const searchParams = new URLSearchParams(document.location.search);
   if (!searchParams.has('name')) {
-    window.location.href = "/books/by-series";
+    window.location.href = '/books/by-series';
   }
   const seriesName = searchParams.get('name');
 
@@ -31,7 +31,7 @@ export default function BooksBySeries() {
         setBooks(response.data.entries);
       })
       .catch((error) => console.error(error));
-  }, []);
+  }, [seriesName]);
 
   const handleDelete = (isbn: number) => {
     axios
@@ -42,13 +42,12 @@ export default function BooksBySeries() {
       .catch((error) => console.error(error));
   };
 
-  const booksAsComponents = books
-    .map((bk, index, books) => (
-      <React.Fragment key={'bk list item: ' + index}>
-        <BookListItem book={bk} onDelete={handleDelete} />
-        {index < books.length - 1 && <Divider variant="middle" component="li" />}
-      </React.Fragment>
-    ));
+  const booksAsComponents = books.map((bk, index, books) => (
+    <React.Fragment key={'bk list item: ' + index}>
+      <BookListItem book={bk} onDelete={handleDelete} />
+      {index < books.length - 1 && <Divider variant="middle" component="li" />}
+    </React.Fragment>
+  ));
 
   return (
     <ThemeProvider theme={defaultTheme}>
