@@ -21,5 +21,3 @@ export interface IBook {
     position: number;
   };
 }
-
-export const avgRating = (bk: IBook) => bk.ratings.average;

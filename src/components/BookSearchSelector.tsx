@@ -8,11 +8,10 @@ export default function BookSearchSelector({
   return (
     <Stack direction="row" spacing={2} justifyContent="center">
       <ToggleButtonGroup color="primary" exclusive onChange={onClick}>
-        {/* <ToggleButton value={'isbn13'}>ISBN</ToggleButton> */}
         <ToggleButton value={'title'}>Title</ToggleButton>
         <ToggleButton value={'authors'}>Author(s)</ToggleButton>
         <ToggleButton value={'publication'}>Publication Year</ToggleButton>
-        <ToggleButton value={'ratings.average'}>Rating</ToggleButton>
+        <ToggleButton value={'ratings'}>Rating</ToggleButton>
       </ToggleButtonGroup>
     </Stack>
   );
