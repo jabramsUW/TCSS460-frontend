@@ -1,6 +1,6 @@
 export interface IPagination {
-    totalRecords: string;
-    limit: string;
-    offset: string;
-    nextPage: number;
-    }
+  totalRecords: string;
+  limit: string;
+  offset: string;
+  nextPage: number;
+}

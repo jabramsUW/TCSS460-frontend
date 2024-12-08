@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import axios from 'utils/axios';
-import { IBook } from 'types/book'; 
+import { IBook } from 'types/book';
 import {
   Container,
   TextField,
