@@ -14,13 +14,13 @@ import { Divider, List } from '@mui/material';
 import axios from 'utils/axios';
 import { IBook } from 'types/book';
 import { IPagination } from 'types/pagination';
-import BookSearchSelector from 'components/BookSearchSelector';
+import BookSortSelector from 'components/BookSortSelector';
 import { NoBook, BookListItem } from 'components/BookListItem';
 
 const defaultTheme = createTheme();
 
+// Get total number of records
 let totalRecords = 0;
-
 axios
   .get(`book/`)
   .then((response) => {
@@ -38,6 +38,7 @@ export default function BooksBrowse() {
   const offset = (currentPage - 1) * perPage;
   const pageCount = pagination ? Math.ceil(parseInt(pagination.totalRecords) / perPage) : 0;
 
+  // Fetch all books
   React.useEffect(() => {
     axios
       .get(`book/?limit=${totalRecords}&offset=0`)
@@ -65,14 +66,9 @@ export default function BooksBrowse() {
     </React.Fragment>
   ));
 
-  const handleParameterClick = (event: React.MouseEvent<HTMLElement>, newKey: keyof IBook) => {
+  const handleSortClick = (event: React.MouseEvent<HTMLElement>, newKey: keyof IBook) => {
     const newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
     setSortOrder(newSortOrder);
-
-    // if (newKey === 'ratings') {
-    //   newKey = 'ratings[average]';
-
-    // }
 
     const sortedItems = [...books].sort((a, b) => {
       if (newKey === 'ratings') {
@@ -108,8 +104,8 @@ export default function BooksBrowse() {
       <Container component="main" maxWidth="md">
         <CssBaseline />
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <Typography variant="h4">Sort Books By</Typography>
-          <BookSearchSelector onClick={handleParameterClick} />
+          <Typography variant="h5">Sort Books By:</Typography>
+          <BookSortSelector onClick={handleSortClick} />
           <Box sx={{ mt: 1 }}>
             <List>{currentPageBooks.length ? currentPageBooks : <NoBook />}</List>
           </Box>
