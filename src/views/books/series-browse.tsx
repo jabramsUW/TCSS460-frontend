@@ -11,41 +11,39 @@ import { Divider, List } from '@mui/material';
 
 // project import
 import axios from 'utils/axios';
-import { IBook } from 'types/book';
-import { NoBook, BookListItem } from 'components/BookListItem';
+import { NoSeries, SeriesListItem } from 'components/SeriesListItem';
 
 const defaultTheme = createTheme();
 
-export default function BooksBySeries() {
-  const [books, setBooks] = React.useState<IBook[]>([]);
-  const searchParams = new URLSearchParams(document.location.search)
-  const seriesName = searchParams.get('name');
+export default function SeriesBrowse() {
+  const [series, setSeries] = React.useState<String[]>([]);
 
   React.useEffect(() => {
     axios
-      .get('book/series/' + seriesName)
+      .get('book/series')
       .then((response) => {
-        setBooks(response.data.entries);
+        setSeries(response.data.series_names);
         // console.dir(response.data);
       })
       .catch((error) => console.error(error));
   }, []);
 
-  const handleDelete = (isbn: number) => {
+  const handleDelete = (seriesName: String) => {
     axios
-      .delete('book/isbn?isbn=' + isbn)
+      .delete('book/series?series=' + seriesName)
       .then((response) => {
-        response.status == 200 && setBooks(books.filter((entry) => entry.isbn !== isbn));
+        response.status == 200 && setSeries(series.filter((entryName) => entryName !== seriesName));
         // console.dir(response.status);
       })
       .catch((error) => console.error(error));
   };
 
-  const booksAsComponents = books
-    .map((bk, index, books) => (
-      <React.Fragment key={'bk list item: ' + index}>
-        <BookListItem book={bk} onDelete={handleDelete} />
-        {index < books.length - 1 && <Divider variant="middle" component="li" />}
+  const seriesAsComponents = series
+    // .filter((bk) => parameter == 0 || parameter == bk.parameter)
+    .map((seriesName, index, series) => (
+      <React.Fragment key={'seriesName list item: ' + index}>
+        <SeriesListItem series={seriesName} onDelete={handleDelete} />
+        {index < series.length - 1 && <Divider variant="middle" component="li" />}
       </React.Fragment>
     ));
 
@@ -54,9 +52,9 @@ export default function BooksBySeries() {
       <Container component="main" maxWidth="md">
         <CssBaseline />
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <Typography variant="h4">Select Book</Typography>
+          <Typography variant="h4">Select Series</Typography>
           <Box sx={{ mt: 1 }}>
-            <List>{booksAsComponents.length ? booksAsComponents : <NoBook />}</List>
+            <List>{seriesAsComponents.length ? seriesAsComponents : <NoSeries />}</List>
           </Box>
         </Box>
       </Container>
