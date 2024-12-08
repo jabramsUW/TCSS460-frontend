@@ -45,7 +45,7 @@ const BookInfo: React.FC<BookInfoProps> = ({ isbn }) => {
           icons: response.data.entry.icons,
           series_info: {
             name: response.data.entry.series_info?.name ?? '',
-            position: response.data.entry.series_info?.positon ?? -1
+            position: response.data.entry.series_info?.position
           }
         };
 
@@ -109,7 +109,7 @@ const BookInfo: React.FC<BookInfoProps> = ({ isbn }) => {
                 {/* Series Information */}
                 {bookData?.series_info && bookData.series_info.name !== '' && (
                   <p style={{ margin: 0 }}>
-                    <strong>Series:</strong> {bookData?.series_info.name} (Position {bookData?.series_info.position})
+                    <strong>Series:</strong> {bookData?.series_info.name} (Book {bookData.series_info?.position})
                   </p>
                 )}
                 <div>
