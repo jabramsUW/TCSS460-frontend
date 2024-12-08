@@ -13,7 +13,7 @@ export function SeriesListItem({ series, onDelete }: { series: String; onDelete:
         }
       >
         <a href={"/books/search/series?name=" + series}>
-          <ListItemText primary={series} />
+          <ListItemText primary={<a href={"/books/search/series?name=" + series}>{series}</a>} />
         </a>
       </ListItem>
   );
