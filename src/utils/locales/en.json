@@ -17,5 +17,6 @@
   "view-messages": "View Messages",
   "search-all": "Search All Books",
   "add-book": "Add New Book",
-  "book-series": "Series"
+  "book-series": "Series",
+  "search-title": "Search By Title"
 }
