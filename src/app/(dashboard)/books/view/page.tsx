@@ -1,4 +1,4 @@
-import BooksSearch from 'views/books/book-search';
+import BooksSearch from 'views/books/book-view';
 
 // ==============================|| PAGE ||============================== //
 
