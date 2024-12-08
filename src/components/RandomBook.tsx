@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import getRandomBook from 'utils/randomBook';
 import Rating from '@mui/material/Rating';
 import CircularLoader from './CircularLoader';
+import Link from 'next/link';
 interface Book {
   isbn13: string;
   authors: string;
@@ -63,23 +64,25 @@ const RandomBook = () => {
           {/* Container for the image and text */}
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start', maxWidth: '100%', flexShrink: 0 }}>
             {/* Image */}
-            <img
-              src={randomBook.icons.large}
-              alt={`${randomBook.title} cover`}
-              style={{
-                minWidth: '150px',
-                width: '150px',
-                height: 'auto',
-                marginRight: '20px',
-                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-                borderRadius: '4px'
-              }}
-            />
+            <Link href={`/books/view?isbn=${randomBook.isbn13}`}>
+              <img
+                src={randomBook.icons.large}
+                alt={`${randomBook.title} cover`}
+                style={{
+                  minWidth: '150px',
+                  width: '150px',
+                  height: 'auto',
+                  marginRight: '20px',
+                  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+                  borderRadius: '4px'
+                }}
+              />
+            </Link>
 
             {/* Text Details */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               <p style={{ margin: 0 }}>
-                <strong>Author:</strong> {randomBook.authors}
+                <strong>Author(s):</strong> {randomBook.authors}
               </p>
               <p style={{ margin: 0 }}>
                 <strong>Year:</strong> {randomBook.publication}
