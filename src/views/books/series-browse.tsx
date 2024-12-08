@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Divider, List } from '@mui/material';
+import { Divider, List, Pagination } from '@mui/material';
 
 // project import
 import axios from 'utils/axios';
@@ -17,12 +17,22 @@ const defaultTheme = createTheme();
 
 export default function SeriesBrowse() {
   const [series, setSeries] = React.useState<String[]>([]);
+  const [currentPage, setCurrentPage] = React.useState(1);
+
+  const perPage = 10;
+  const offset = (currentPage - 1) * perPage;
+  const pageCount = Math.ceil(series.length / perPage);
 
   React.useEffect(() => {
     axios
       .get('book/series')
       .then((response) => {
         setSeries(response.data.series_names);
+        const sortSeries = (series: string[]) => {
+          return series.sort((a, b) => a.localeCompare(b));
+        };
+
+        setSeries(sortSeries(response.data.series_names));
         // console.dir(response.data);
       })
       .catch((error) => console.error(error));
@@ -39,6 +49,7 @@ export default function SeriesBrowse() {
   };
 
   const seriesAsComponents = series
+    .slice(offset, offset + perPage)
     // .filter((bk) => parameter == 0 || parameter == bk.parameter)
     .map((seriesName, index, series) => (
       <React.Fragment key={'seriesName list item: ' + index}>
@@ -46,6 +57,10 @@ export default function SeriesBrowse() {
         {index < series.length - 1 && <Divider variant="middle" component="li" />}
       </React.Fragment>
     ));
+
+  const handlePageClick = (event: React.ChangeEvent<unknown>, newPage: number) => {
+    setCurrentPage(newPage);
+  };
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -56,6 +71,7 @@ export default function SeriesBrowse() {
           <Box sx={{ mt: 1 }}>
             <List>{seriesAsComponents.length ? seriesAsComponents : <NoSeries />}</List>
           </Box>
+          <Pagination count={pageCount} page={currentPage} onChange={handlePageClick} color="primary" />
         </Box>
       </Container>
     </ThemeProvider>
