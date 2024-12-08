@@ -59,7 +59,7 @@ export default function BooksBySeries() {
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <Typography variant="h4">Select Series</Typography>
           <Box sx={{ mt: 1 }}>
-            <List>{seriesAsComponents.length ? seriesAsComponents : <NoBook />}</List>
+            <List>{seriesAsComponents.length ? seriesAsComponents : <NoSeries />}</List>
           </Box>
         </Box>
       </Container>
