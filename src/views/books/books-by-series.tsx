@@ -19,6 +19,9 @@ const defaultTheme = createTheme();
 export default function BooksBySeries() {
   const [books, setBooks] = React.useState<IBook[]>([]);
   const searchParams = new URLSearchParams(document.location.search)
+  if (!searchParams.has('name')) {
+    window.location.href = "/books/by-series";
+  }
   const seriesName = searchParams.get('name');
 
   React.useEffect(() => {
