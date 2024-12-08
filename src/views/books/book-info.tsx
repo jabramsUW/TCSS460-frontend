@@ -121,7 +121,6 @@ const BookInfo: React.FC<BookInfoProps> = ({ isbn }) => {
                   <strong>Series:</strong> {bookData?.series_info.name} (Position {bookData?.series_info.position})
                 </p>
               )}
-              <strong>Rating:</strong> {bookData?.ratings.average}
               <div>
                 <Rating name="bookRating" value={bookData?.ratings.average} precision={0.2} size="medium" readOnly />
                 <br /> ({bookData?.ratings.count} reviews)
