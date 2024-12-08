@@ -5,6 +5,8 @@ import axios from 'utils/axios';
 import Rating from '@mui/material/Rating';
 import CircularLoader from 'components/CircularLoader';
 import Link from 'next/link';
+import MainCard from 'components/MainCard';
+import { useRouter } from 'next/navigation'; // Use next/navigation for routing
 
 interface BookInfoProps {
   isbn: string;
@@ -14,17 +16,15 @@ const BookInfo: React.FC<BookInfoProps> = ({ isbn }) => {
   const [bookData, setBookData] = useState<IBook | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter(); // Get router instance
+  const handleBackButton = () => {
+    router.back(); // Navigate back to the previous page
+  };
 
   useEffect(() => {
     const fetchBookInfo = async () => {
       try {
-        console.log('Fetching book information for ISBN:', isbn); // Debugging line
-
-        // Replace with the actual API endpoint
         const response = await axios.get(`/book/isbn/?isbn=${isbn}`);
-
-        // Log the response data for debugging
-        console.log('Response data:', response.data);
 
         // Access data inside 'entry' and map it to the IBook interface
         const book: IBook = {
@@ -63,7 +63,7 @@ const BookInfo: React.FC<BookInfoProps> = ({ isbn }) => {
   }, [isbn]);
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <CircularLoader />;
   }
 
   if (error) {
@@ -71,73 +71,64 @@ const BookInfo: React.FC<BookInfoProps> = ({ isbn }) => {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start', flexWrap: 'wrap', gap: '20px' }}>
-      <>
-        <h1
-          style={{
-            fontSize: '1.5em',
-            textAlign: 'left',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
-            width: '100%',
-            margin: '0px'
-          }}
-          title={bookData?.title} // Tooltip for the full title
-        >
-          {bookData?.title}
-        </h1>
+    <>
+      {/* Back Button */}
+      <button onClick={handleBackButton} style={{ marginBottom: '20px', padding: '10px 20px', cursor: 'pointer' }}>
+        Back
+      </button>
+      <MainCard title={bookData?.title}>
+        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start', flexWrap: 'wrap', gap: '20px' }}>
+          {/* Container for the image and text */}
+          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start', maxWidth: '100%', flexShrink: 0 }}>
+            {/* Image */}
+            <Link href={`/books/view?isbn=${bookData?.isbn13}`}>
+              <img
+                src={bookData?.icons.large}
+                alt={`${bookData?.title} cover`}
+                style={{
+                  minWidth: '150px',
+                  width: '150px',
+                  height: 'auto',
+                  marginRight: '20px',
+                  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+                  borderRadius: '4px'
+                }}
+              />
+            </Link>
 
-        {/* Container for the image and text */}
-        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start', maxWidth: '100%', flexShrink: 0 }}>
-          {/* Image */}
-          <Link href={`/books/view?isbn=${bookData?.isbn13}`}>
-            <img
-              src={bookData?.icons.large}
-              alt={`${bookData?.title} cover`}
-              style={{
-                minWidth: '150px',
-                width: '150px',
-                height: 'auto',
-                marginRight: '20px',
-                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-                borderRadius: '4px'
-              }}
-            />
-          </Link>
-
-          {/* Text Details */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            <p style={{ margin: 0 }}>
-              <strong>Author(s):</strong> {bookData?.authors}
-            </p>
-            <p style={{ margin: 0 }}>
-              <strong>Year:</strong> {bookData?.publication}
-            </p>
-            <p style={{ margin: 0 }}>
-              {/* Series Information */}
-              {bookData?.series_info && bookData.series_info.name !== '' && (
-                <p style={{ margin: 0 }}>
-                  <strong>Series:</strong> {bookData?.series_info.name} (Position {bookData?.series_info.position})
-                </p>
-              )}
-              <div>
-                <Rating name="bookRating" value={bookData?.ratings.average} precision={0.2} size="medium" readOnly />
-                <br /> ({bookData?.ratings.count} reviews)
-              </div>
-              <strong>Rating:</strong> {bookData?.ratings.average}
-              <div>
-                {bookData?.ratings.rating_5} 5* reviews <br />
-                {bookData?.ratings.rating_4} 4* reviews <br />
-                {bookData?.ratings.rating_3} 3* reviews <br />
-                {bookData?.ratings.rating_2} 2* reviews <br />
-                {bookData?.ratings.rating_1} 1* reviews
-              </div>
-            </p>
+            {/* Text Details */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <p style={{ margin: 0 }}>
+                <strong>Author(s):</strong> {bookData?.authors}
+              </p>
+              <p style={{ margin: 0 }}>
+                <strong>Year:</strong> {bookData?.publication}
+              </p>
+              <p style={{ margin: 0 }}>
+                {/* Series Information */}
+                {bookData?.series_info && bookData.series_info.name !== '' && (
+                  <p style={{ margin: 0 }}>
+                    <strong>Series:</strong> {bookData?.series_info.name} (Position {bookData?.series_info.position})
+                  </p>
+                )}
+                <div>
+                  <Rating name="bookRating" value={bookData?.ratings.average} precision={0.2} size="medium" readOnly />
+                  <br /> ({bookData?.ratings.count} reviews)
+                </div>
+                <strong>Rating:</strong> {bookData?.ratings.average}
+                <div>
+                  {bookData?.ratings.rating_5} 5* reviews <br />
+                  {bookData?.ratings.rating_4} 4* reviews <br />
+                  {bookData?.ratings.rating_3} 3* reviews <br />
+                  {bookData?.ratings.rating_2} 2* reviews <br />
+                  {bookData?.ratings.rating_1} 1* reviews
+                </div>
+              </p>
+            </div>
           </div>
         </div>
-      </>
-    </div>
+      </MainCard>
+    </>
   );
 };
 
