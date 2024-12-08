@@ -32,21 +32,21 @@ const pages: NavItemType = {
           id: 'Find-a-book',
           title: <FormattedMessage id="search-title" />,
           type: 'item',
-          url: '/books/search/title',
+          url: '/books/search',
           icon: icons.SearchIcon
         },
         {
-          id: 'Search-all-books',
-          title: <FormattedMessage id="search-all" />,
+          id: 'Browse-books',
+          title: <FormattedMessage id="browse-books" />,
           type: 'item',
-          url: '/books/search',
-          icon: icons.SearchIcon
+          url: '/books/browse',
+          icon: icons.BookIcon
         },
         {
           id: 'book-series',
           title: <FormattedMessage id="book-series" />,
           type: 'item',
-          url: '/books/by-series',
+          url: '/books/series',
           icon: icons.LibraryBooksIcon
         },
         {
