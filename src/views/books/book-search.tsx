@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import axios from 'axios';
+import axios from 'utils/axios';
+import { IBook } from 'types/book'; 
 import {
   Container,
   TextField,
@@ -22,36 +23,9 @@ import {
   LinearProgress
 } from '@mui/material';
 
-const API_URL = 'http://localhost:4000/book/title';
-const API_UPDATE_URL = 'http://localhost:4000/book';
-
-type Book = {
-  isbn13: string | null;
-  authors: string;
-  publication: number;
-  title: string;
-  ratings?: {
-    average?: number;
-    count?: number;
-    rating_1?: number;
-    rating_2?: number;
-    rating_3?: number;
-    rating_4?: number;
-    rating_5?: number;
-  };
-  series_info?: {
-    name: string | null;
-    position: number | null;
-  };
-  icons?: {
-    large: string;
-    small: string;
-  };
-};
-
 export default function BookSearch() {
   const [searchTerm, setSearchTerm] = useState('');
-  const [book, setBook] = useState<Book | null>(null);
+  const [book, setBook] = useState<IBook | null>(null);
   const [error, setError] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedRating, setSelectedRating] = useState<number | null>(null);
@@ -67,13 +41,7 @@ export default function BookSearch() {
     }
 
     try {
-      const response = await axios.get(API_URL, {
-        params: { title: searchTerm.trim() },
-        headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoxLCJpZCI6MiwiaWF0IjoxNzMzMzk5ODE4LCJleHAiOjE3MzQ2MDk0MTh9.-87zOzEWvg91q-TorZRccNkbc9FdkpDod-yJCHRg0yc`
-        }
-      });
-
+      const response = await axios.get('book/title', { params: { title: searchTerm.trim() } });
       if (response.data && response.data.entries.length > 0) {
         setBook(response.data.entries[0]);
         setError('');
@@ -110,18 +78,10 @@ export default function BookSearch() {
     if (!book?.isbn13 || selectedRating === null) return;
 
     try {
-      const response = await axios.put(
-        API_UPDATE_URL,
-        {
-          isbn: book.isbn13,
-          [`new_star${selectedRating}`]: 1 // Increment the selected rating
-        },
-        {
-          headers: {
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoxLCJpZCI6MiwiaWF0IjoxNzMzMzk5ODE4LCJleHAiOjE3MzQ2MDk0MTh9.-87zOzEWvg91q-TorZRccNkbc9FdkpDod-yJCHRg0yc`
-          }
-        }
-      );
+      const response = await axios.put('book', {
+        isbn: book.isbn13,
+        [`new_star${selectedRating}`]: 1
+      });
 
       if (response.status === 200) {
         setFeedbackMessage('Rating submitted successfully!');
@@ -139,14 +99,7 @@ export default function BookSearch() {
           }
         }, 100);
 
-        // Fetch updated data from the backend
-        const updatedResponse = await axios.get(API_URL, {
-          params: { title: searchTerm.trim() },
-          headers: {
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoxLCJpZCI6MiwiaWF0IjoxNzMzMzk5ODE4LCJleHAiOjE3MzQ2MDk0MTh9.-87zOzEWvg91q-TorZRccNkbc9FdkpDod-yJCHRg0yc`
-          }
-        });
-
+        const updatedResponse = await axios.get('book/title', { params: { title: searchTerm.trim() } });
         if (updatedResponse.data && updatedResponse.data.entries.length > 0) {
           setBook(updatedResponse.data.entries[0]);
         }
