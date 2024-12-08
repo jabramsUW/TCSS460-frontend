@@ -1,8 +1,6 @@
-import DeleteIcon from '@mui/icons-material/Delete';
 import CommentsDisabledIcon from '@mui/icons-material/CommentsDisabled';
 import { IconButton, ListItem, ListItemAvatar, ListItemText, Rating } from '@mui/material';
 
-// project import
 import { IBook } from 'types/book';
 import Avatar from './@extended/Avatar';
 

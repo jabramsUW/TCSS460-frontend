@@ -2,23 +2,20 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import CommentsDisabledIcon from '@mui/icons-material/CommentsDisabled';
 import { IconButton, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
 
-// project import
-import PriorityAvatar from 'components/Priority';
-
 export function SeriesListItem({ series, onDelete }: { series: String; onDelete: (seriesName: String) => void }) {
   return (
-    <ListItem
-      secondaryAction={
-        <IconButton edge="end" aria-label="delete" onClick={() => onDelete(series)}>
-          <DeleteIcon />
-        </IconButton>
-      }
-    >
-      <ListItemAvatar>
-        <PriorityAvatar priority={0} />
-      </ListItemAvatar>
-      <ListItemText primary={series} />
-    </ListItem>
+    
+      <ListItem
+        secondaryAction={
+          <IconButton edge="end" aria-label="delete" onClick={() => onDelete(series)}>
+            <DeleteIcon />
+          </IconButton>
+        }
+      >
+        <a href={"/books/search/series?name=" + series}>
+          <ListItemText primary={series} />
+        </a>
+      </ListItem>
   );
 }
 

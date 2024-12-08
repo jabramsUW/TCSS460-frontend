@@ -51,7 +51,7 @@ export default function SendBook({
 
         validationSchema={Yup.object().shape({
           isbn13: Yup.number().required('ISBN is required'),
-          publication_year: Yup.number().min(1000).required('Publication Year is required'),
+          publication_year: Yup.number().min(1600).max(3000).required('Publication Year is required (1600-3000)'),
           title: Yup.string().max(255).required('Title is required'),
           image_url: Yup.string(),
           small_url: Yup.string(),
@@ -76,8 +76,8 @@ export default function SendBook({
           const authorsArray = values.authors.split(',').map((author) => author.trim());
           const seriesName = values.series_name || "N/A";
           const seriesNumber = values.series_pos || 0;
-          const imageURL = values.image_url || "N/A";
-          const smallImageURL = values.small_url || "N/A";
+          const imageURL = values.image_url || "https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png";
+          const smallImageURL = values.small_url || "https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png";
 
           axios
             .post('/book', { 
@@ -157,7 +157,7 @@ export default function SendBook({
               
               <Grid item xs={6}>
                 <Stack spacing={1}>
-                  <InputLabel htmlFor="publication_year">Published Year</InputLabel>
+                  <InputLabel htmlFor="publication_year">Published Year (1600~3000)</InputLabel>
                   <OutlinedInput
                     fullWidth
                     error={Boolean(touched.publication_year && errors.publication_year)}
