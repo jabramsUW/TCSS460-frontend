@@ -8,11 +8,12 @@ import SendIcon from '@mui/icons-material/Send';
 import SearchIcon from '@mui/icons-material/Search';
 import BookIcon from '@mui/icons-material/Book';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
+import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 // type
 import { NavItemType } from 'types/menu';
 
 // icons
-const icons = { MessageOutlined, EmailIcon, SendIcon, SearchIcon, BookIcon, LibraryBooksIcon };
+const icons = { MessageOutlined, EmailIcon, SendIcon, SearchIcon, BookIcon, LibraryBooksIcon, LibraryAddIcon };
 
 // ==============================|| MENU ITEMS - PAGES ||============================== //
 
@@ -53,7 +54,7 @@ const pages: NavItemType = {
           title: <FormattedMessage id="add-book" />,
           type: 'item',
           url: '/books/create',
-          icon: icons.BookIcon
+          icon: icons.LibraryAddIcon
         }
       ]
     }
