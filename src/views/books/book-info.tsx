@@ -7,6 +7,7 @@ import CircularLoader from 'components/CircularLoader';
 import Link from 'next/link';
 import MainCard from 'components/MainCard';
 import { useRouter } from 'next/navigation'; // Use next/navigation for routing
+import RatingsSliders from 'components/RatingSliders';
 
 interface BookInfoProps {
   isbn: string;
@@ -44,7 +45,7 @@ const BookInfo: React.FC<BookInfoProps> = ({ isbn }) => {
           icons: response.data.entry.icons,
           series_info: {
             name: response.data.entry.series_info?.name ?? '',
-            position: response.data.entry.series_info?.positon ?? -1
+            position: response.data.entry.series_info?.position
           }
         };
 
@@ -108,21 +109,15 @@ const BookInfo: React.FC<BookInfoProps> = ({ isbn }) => {
                 {/* Series Information */}
                 {bookData?.series_info && bookData.series_info.name !== '' && (
                   <p style={{ margin: 0 }}>
-                    <strong>Series:</strong> {bookData?.series_info.name} (Position {bookData?.series_info.position})
+                    <strong>Series:</strong> {bookData?.series_info.name} (Book {bookData.series_info?.position})
                   </p>
                 )}
                 <div>
+                  <strong>Rating:</strong> {bookData?.ratings.average} <br />
                   <Rating name="bookRating" value={bookData?.ratings.average} precision={0.2} size="medium" readOnly />
-                  <br /> ({bookData?.ratings.count} reviews)
+                  <br /> <small>({bookData?.ratings.count} reviews)</small>
                 </div>
-                <strong>Rating:</strong> {bookData?.ratings.average}
-                <div>
-                  {bookData?.ratings.rating_5} 5* reviews <br />
-                  {bookData?.ratings.rating_4} 4* reviews <br />
-                  {bookData?.ratings.rating_3} 3* reviews <br />
-                  {bookData?.ratings.rating_2} 2* reviews <br />
-                  {bookData?.ratings.rating_1} 1* reviews
-                </div>
+                {bookData && <RatingsSliders book={bookData} />}
               </p>
             </div>
           </div>
