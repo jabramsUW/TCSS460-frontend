@@ -208,6 +208,9 @@ const BookInfo: React.FC<BookInfoProps> = ({ isbn }) => {
                 <strong>Year:</strong> {bookData?.publication}
               </p>
               <p style={{ margin: 0 }}>
+                <strong>ISBN13:</strong> {bookData?.isbn13}
+              </p>
+              <p style={{ margin: 0 }}>
                 {/* Series Information */}
                 {bookData?.series_info && bookData.series_info.name !== '' && (
                   <p style={{ margin: 0 }}>
