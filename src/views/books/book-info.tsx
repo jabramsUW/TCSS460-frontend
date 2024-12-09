@@ -165,9 +165,14 @@ const BookInfo: React.FC<BookInfoProps> = ({ isbn }) => {
       )}
 
       {/* Back Button */}
-      <button onClick={handleBackButton} style={{ marginBottom: '20px', padding: '10px 20px', cursor: 'pointer' }}>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleBackButton}
+        style={{ marginBottom: '20px', padding: '10px 20px', cursor: 'pointer' }}
+      >
         Back
-      </button>
+      </Button>
 
       <MainCard title={bookData?.title}>
         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start', flexWrap: 'wrap', gap: '20px' }}>
