@@ -258,7 +258,7 @@ export default function SendBook({ onSuccess, onError }: { onSuccess: () => void
 
               <Grid item xs={12}>
                 <Stack spacing={1}>
-                  <InputLabel htmlFor="image_url">image_url</InputLabel>
+                  <InputLabel htmlFor="image_url">Image URL</InputLabel>
                   <OutlinedInput
                     fullWidth
                     error={Boolean(touched.image_url && errors.image_url)}
@@ -280,7 +280,7 @@ export default function SendBook({ onSuccess, onError }: { onSuccess: () => void
 
               <Grid item xs={12}>
                 <Stack spacing={1}>
-                  <InputLabel htmlFor="small_url">small_url</InputLabel>
+                  <InputLabel htmlFor="small_url">Image URL (SMALL)</InputLabel>
                   <OutlinedInput
                     fullWidth
                     error={Boolean(touched.small_url && errors.small_url)}
@@ -299,7 +299,7 @@ export default function SendBook({ onSuccess, onError }: { onSuccess: () => void
                   </FormHelperText>
                 )}
               </Grid>
-
+              
               <Grid item xs={2.4}>
                 <Stack spacing={1}>
                   <InputLabel htmlFor="rating_1">1 Star Rating</InputLabel>
