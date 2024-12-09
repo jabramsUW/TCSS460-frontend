@@ -63,7 +63,7 @@ export default function BookSearch() {
         url = 'book/year?year_min=' + searchTerm.trim() + '&year_max=' + searchTerm.trim();
         break;
       case 'ISBN':
-        window.location.href = `/books/view?isbn=` + searchTerm.trim();
+        url = `book/isbn?isbn=` + searchTerm.trim();
         break;
       case 'minimum rating (0-5)':
         url = 'book/rating?rating_min=' + searchTerm.trim();
@@ -73,8 +73,13 @@ export default function BookSearch() {
     axios
       .get(url)
       .then((response) => {
-        setBooks(response.data.entries);
-        setError('');
+        if (searchBy === 'ISBN') {
+          setBooks([response.data.entry]);
+          setError('');
+        } else {
+          setBooks(response.data.entries);
+          setError('');
+        }
       })
       .catch((error) => setError(error.message));
   };
