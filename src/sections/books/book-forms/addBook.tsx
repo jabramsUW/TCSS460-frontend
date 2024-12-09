@@ -66,7 +66,12 @@ export default function SendBook({ onSuccess, onError }: { onSuccess: () => void
         onSubmit={(values, { setErrors, setSubmitting, setValues, resetForm }) => {
           console.dir(values);
 
-          //helper for arrays for author
+          //helpers
+          //For blank entries default values are:
+          //Series Name = N/A
+          //Series Number = 0
+          //Image URL = https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png (Placeholder image)
+          //Small Image URL = https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png (Placeholder image)
           const authorsArray = values.authors.split(',').map((author) => author.trim());
           const seriesName = values.series_name || 'N/A';
           const seriesNumber = values.series_pos || 0;
