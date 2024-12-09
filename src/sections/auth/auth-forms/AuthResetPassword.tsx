@@ -115,33 +115,6 @@ export default function AuthResetPassword() {
               setSubmitting(false);
             }
           });
-        // try {
-        //   // password reset
-        //   if (scriptedRef.current) {
-        //     setStatus({ success: true });
-        //     setSubmitting(false);
-
-        //     openSnackbar({
-        //       open: true,
-        //       message: 'Successfuly reset password.',
-        //       variant: 'alert',
-        //       alert: {
-        //         color: 'success'
-        //       }
-        //     } as SnackbarProps);
-
-        //     setTimeout(() => {
-        //       router.push('/login');
-        //     }, 1500);
-        //   }
-        // } catch (err: any) {
-        //   console.error(err);
-        //   if (scriptedRef.current) {
-        //     setStatus({ success: false });
-        //     setErrors({ submit: err.message });
-        //     setSubmitting(false);
-        //   }
-        // }
       }}
     >
       {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (

@@ -17,7 +17,7 @@ export function BookListItem({ book, onDelete }: { book: IBook; onDelete: (isbn:
       <Link href={`/books/view?isbn=${book.isbn13}`} style={{ color: 'black', textDecoration: 'none' }} passHref>
         <ListItemButton component="a">
           <ListItemAvatar sx={{ pr: 2 }}>
-            <Avatar alt={book.title} src={book.icons.small} sx={{ width: 1, height: 1 }} variant="square" />
+            <Avatar alt={book.title} src={book.icons.small} sx={{ width: 50, height: 75 }} variant="square" />
           </ListItemAvatar>
           <ListItemText
             primary={book.title}
