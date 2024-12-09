@@ -56,9 +56,20 @@ const RandomBook = () => {
               width: '100%',
               margin: '0px'
             }}
-            title={randomBook.title} // Tooltip for the full title
+            title={randomBook.title}
           >
-            {randomBook.title}
+            <a
+              href={`/books/view?isbn=${randomBook.isbn13}`} // Replace this with the link you want
+              style={{
+                textDecoration: 'none',
+                color: 'inherit',
+                margin: 0,
+                padding: 0
+              }}
+              title={randomBook.title} // Tooltip for the full title
+            >
+              {randomBook.title}
+            </a>
           </h1>
 
           {/* Container for the image and text */}
