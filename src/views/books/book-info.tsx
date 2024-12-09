@@ -174,7 +174,12 @@ const BookInfo: React.FC<BookInfoProps> = ({ isbn }) => {
         Back
       </Button>
 
-      <MainCard title={bookData?.title}>
+      <MainCard
+        title={bookData?.title}
+        sx={{
+          '& .MuiCardHeader-title': { fontSize: '1.5rem' } // Title size
+        }}
+      >
         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start', flexWrap: 'wrap', gap: '20px' }}>
           {/* Container for the image and text */}
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start', maxWidth: '100%', flexShrink: 0 }}>
