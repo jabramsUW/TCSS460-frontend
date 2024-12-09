@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Alert, Button, Divider, Grid, List, TextField } from '@mui/material';
+import { Alert, Button, Divider, Grid, List, MenuItem, TextField } from '@mui/material';
 
 // project import
 import axios from 'utils/axios';
@@ -20,15 +20,58 @@ export default function BookSearch() {
   const [books, setBooks] = React.useState<IBook[]>([]);
   const [searchTerm, setSearchTerm] = React.useState('');
   const [error, setError] = React.useState('');
+  const [searchBy, setSearchBy] = React.useState('title');
+
+  const terms = [
+    {
+      value: 'title',
+      label: 'Title'
+    },
+    {
+      value: 'author',
+      label: 'Author'
+    },
+    {
+      value: 'publication year',
+      label: 'Year'
+    },
+    {
+      value: 'ISBN',
+      label: 'ISBN'
+    },
+    {
+      value: 'minimum rating (0-5)',
+      label: 'Rating'
+    }
+  ];
 
   const handleSearch = () => {
     if (!searchTerm) {
-      setError('Title was not provided.');
+      setError(`${searchBy} was not provided.`);
       return;
     }
 
+    let url = '';
+    switch (searchBy) {
+      case 'title':
+        url = 'book/title?title=' + searchTerm.trim();
+        break;
+      case 'author':
+        url = 'book/authors/' + searchTerm.trim();
+        break;
+      case 'publication year':
+        url = 'book/year?year_min=' + searchTerm.trim() + '&year_max=' + searchTerm.trim();
+        break;
+      case 'ISBN':
+        url = 'book/isbn?isbn=' + searchTerm.trim();
+        break;
+      case 'minimum rating (0-5)':
+        url = 'book/rating?rating_min=' + searchTerm.trim();
+        break;
+    }
+
     axios
-      .get('book/title?title=' + searchTerm.trim())
+      .get(url)
       .then((response) => {
         setBooks(response.data.entries);
         setError('');
@@ -60,11 +103,27 @@ export default function BookSearch() {
           Book Search
         </Typography>
         <Grid container spacing={2} alignItems="center">
+          <Grid item xs={2}>
+            <TextField
+              fullWidth
+              variant="outlined"
+              label="Search by"
+              defaultValue="title"
+              select
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchBy(e.target.value)}
+            >
+              {terms.map((term) => (
+                <MenuItem key={term.value} value={term.value}>
+                  {term.label}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
           <Grid item xs={8}>
             <TextField
               fullWidth
               variant="outlined"
-              label="Enter book title"
+              label={`Enter book ${searchBy}`}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               onKeyDown={(ev) => {
