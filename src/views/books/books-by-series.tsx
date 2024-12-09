@@ -3,6 +3,7 @@
 import * as React from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
+import { useSearchParams } from 'next/navigation';
 
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
@@ -18,9 +19,9 @@ const defaultTheme = createTheme();
 
 export default function BooksBySeries() {
   const [books, setBooks] = React.useState<IBook[]>([]);
-  const searchParams = new URLSearchParams(document.location.search);
+  const searchParams = useSearchParams();
   if (!searchParams.has('name')) {
-    window.location.href = '/books/by-series';
+    window.location.href = '/books/series';
   }
   const seriesName = searchParams.get('name');
 
