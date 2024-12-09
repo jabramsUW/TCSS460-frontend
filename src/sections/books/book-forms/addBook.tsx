@@ -304,7 +304,7 @@ export default function SendBook({ onSuccess, onError }: { onSuccess: () => void
                   </FormHelperText>
                 )}
               </Grid>
-              
+
               <Grid item xs={2.4}>
                 <Stack spacing={1}>
                   <InputLabel htmlFor="rating_1">1 Star Rating</InputLabel>
