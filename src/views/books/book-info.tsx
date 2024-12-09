@@ -74,6 +74,7 @@ const BookInfo: React.FC<BookInfoProps> = ({ isbn }) => {
 
   const handleRatingChange = async (newRating: number) => {
     setUserRating(newRating); // Update locally immediately
+    newRating = Math.round(newRating);
     try {
       // Send the rating to the backend
       await axios.put('book', {
@@ -223,8 +224,9 @@ const BookInfo: React.FC<BookInfoProps> = ({ isbn }) => {
                     value={userRating}
                     onChange={(event, newValue) => {
                       if (newValue !== null) {
-                        // Prevent deselecting
                         handleRatingChange(newValue);
+                      } else if (bookData !== null) {
+                        handleRatingChange(bookData.ratings.average);
                       }
                     }}
                     size="large"
