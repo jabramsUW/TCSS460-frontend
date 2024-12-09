@@ -73,8 +73,13 @@ export default function BookSearch() {
     axios
       .get(url)
       .then((response) => {
-        setBooks(response.data.entries);
-        setError('');
+        if (searchBy === 'ISBN') {
+          setBooks([response.data.entry]);
+          setError('');
+        } else {
+          setBooks(response.data.entries);
+          setError('');
+        }
       })
       .catch((error) => setError(error.message));
   };
