@@ -11,6 +11,8 @@ import Button from '@mui/material/Button';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import { Alert } from '@mui/material';
 import { Box } from '@mui/system';
+import StarIcon from '@mui/icons-material/Star';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
 interface BookInfoProps {
   isbn: string;
 }
@@ -34,6 +36,8 @@ const BookInfo: React.FC<BookInfoProps> = ({ isbn }) => {
   const [confirmOpen, setConfirmOpen] = useState(false); // Dialog open state
   const router = useRouter(); // Get router instance
   const [alert, setAlert] = useState(EMPTY_ALERT);
+  const [userRating, setUserRating] = useState<number | null>(null); // User-selected rating
+  const [ratingColor, setRatingColor] = useState('#ff9800'); // Default star color
 
   const onSuccess = (message: string) => {
     setAlert({
@@ -68,41 +72,64 @@ const BookInfo: React.FC<BookInfoProps> = ({ isbn }) => {
     }
   };
 
+  const handleRatingChange = async (newRating: number) => {
+    setUserRating(newRating); // Update locally immediately
+    try {
+      // Send the rating to the backend
+      await axios.put('book', {
+        isbn: bookData?.isbn13,
+        [`new_star${newRating}`]: 1
+      });
+      fetchBookInfo(); // Re-fetch the book data to update the average rating and count
+      setAlert({ showAlert: true, alertMessage: 'Rating updated successfully!', alertSeverity: 'success' });
+    } catch (err) {
+      console.error('Error updating rating:', err);
+      setAlert({ showAlert: true, alertMessage: 'Failed to update rating: ' + err.message, alertSeverity: 'error' });
+
+      // Reset the color to red if the update fails
+      setRatingColor('#f44336'); // Red for error
+      setTimeout(() => setRatingColor('#ff9800'), 2000); // Reset to default
+    }
+  };
+
+  const fetchBookInfo = async () => {
+    try {
+      const response = await axios.get(`/book/isbn/?isbn=${isbn}`);
+
+      // Access data inside 'entry' and map it to the IBook interface
+      const book: IBook = {
+        isbn13: response.data.entry.isbn13,
+        authors: response.data.entry.authors,
+        publication: response.data.entry.publication,
+        title: response.data.entry.title,
+        ratings: {
+          average: response.data.entry.ratings?.average ?? 0, // Optional chaining and fallback for undefined/null
+          count: response.data.entry.ratings?.count ?? 0,
+          rating_1: response.data.entry.ratings?.rating_1 ?? 0,
+          rating_2: response.data.entry.ratings?.rating_2 ?? 0,
+          rating_3: response.data.entry.ratings?.rating_3 ?? 0,
+          rating_4: response.data.entry.ratings?.rating_4 ?? 0,
+          rating_5: response.data.entry.ratings?.rating_5 ?? 0
+        },
+        icons: response.data.entry.icons,
+        series_info: {
+          name: response.data.entry.series_info?.name ?? '',
+          position: response.data.entry.series_info?.position
+        }
+      };
+
+      setBookData(book); // Set the state with properly mapped data
+      setUserRating(book.ratings.average);
+    } catch (err) {
+      console.error('Error fetching book data:', err); // Log the error
+      setError('Failed to fetch book information');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchBookInfo = async () => {
-      try {
-        const response = await axios.get(`/book/isbn/?isbn=${isbn}`);
-
-        // Access data inside 'entry' and map it to the IBook interface
-        const book: IBook = {
-          isbn13: response.data.entry.isbn13,
-          authors: response.data.entry.authors,
-          publication: response.data.entry.publication,
-          title: response.data.entry.title,
-          ratings: {
-            average: response.data.entry.ratings?.average ?? 0, // Optional chaining and fallback for undefined/null
-            count: response.data.entry.ratings?.count ?? 0,
-            rating_1: response.data.entry.ratings?.rating_1 ?? 0,
-            rating_2: response.data.entry.ratings?.rating_2 ?? 0,
-            rating_3: response.data.entry.ratings?.rating_3 ?? 0,
-            rating_4: response.data.entry.ratings?.rating_4 ?? 0,
-            rating_5: response.data.entry.ratings?.rating_5 ?? 0
-          },
-          icons: response.data.entry.icons,
-          series_info: {
-            name: response.data.entry.series_info?.name ?? '',
-            position: response.data.entry.series_info?.position
-          }
-        };
-
-        setBookData(book); // Set the state with properly mapped data
-      } catch (err) {
-        console.error('Error fetching book data:', err); // Log the error
-        setError('Failed to fetch book information');
-      } finally {
-        setLoading(false);
-      }
-    };
+    fetchBookInfo();
 
     if (isbn) {
       fetchBookInfo();
@@ -172,7 +199,7 @@ const BookInfo: React.FC<BookInfoProps> = ({ isbn }) => {
               </Button>
             </Box>
             {/* Text Details */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', minWidth: '300px' }}>
               <p style={{ margin: 0 }}>
                 <strong>Author(s):</strong> {bookData?.authors}
               </p>
@@ -187,8 +214,20 @@ const BookInfo: React.FC<BookInfoProps> = ({ isbn }) => {
                   </p>
                 )}
                 <div>
-                  <strong>Rating:</strong> {bookData?.ratings.average} <br />
-                  <Rating name="bookRating" value={bookData?.ratings.average} precision={0.2} size="medium" readOnly />
+                  <strong>Rating:</strong> {(bookData?.ratings.average).toFixed(2)} <br />
+                  <Rating
+                    value={userRating}
+                    onChange={(event, newValue) => {
+                      if (newValue !== null) {
+                        // Prevent deselecting
+                        handleRatingChange(newValue);
+                      }
+                    }}
+                    size="large"
+                    precision={1}
+                    icon={<StarIcon style={{ color: ratingColor }} />} // Use dynamic color
+                    emptyIcon={<StarBorderIcon style={{ color: '#ccc' }} />} // Default empty star color
+                  />
                   <br /> <small>({bookData?.ratings.count} reviews)</small>
                 </div>
                 {bookData && <RatingsSliders book={bookData} />}
