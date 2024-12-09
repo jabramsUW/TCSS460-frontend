@@ -63,7 +63,7 @@ export default function BookSearch() {
         url = 'book/year?year_min=' + searchTerm.trim() + '&year_max=' + searchTerm.trim();
         break;
       case 'ISBN':
-        url = `/books/view?isbn=` + searchTerm.trim();
+        url = `book/isbn?isbn=` + searchTerm.trim();
         break;
       case 'minimum rating (0-5)':
         url = 'book/rating?rating_min=' + searchTerm.trim();
