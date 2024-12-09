@@ -82,10 +82,11 @@ const BookInfo: React.FC<BookInfoProps> = ({ isbn }) => {
       });
       fetchBookInfo(); // Re-fetch the book data to update the average rating and count
       setAlert({ showAlert: true, alertMessage: 'Rating updated successfully!', alertSeverity: 'success' });
-    } catch (err) {
-      console.error('Error updating rating:', err);
-      setAlert({ showAlert: true, alertMessage: 'Failed to update rating: ' + err.message, alertSeverity: 'error' });
-
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        console.error('Error updating rating:', err);
+        setAlert({ showAlert: true, alertMessage: 'Failed to update rating: ' + err.message, alertSeverity: 'error' });
+      }
       // Reset the color to red if the update fails
       setRatingColor('#f44336'); // Red for error
       setTimeout(() => setRatingColor('#ff9800'), 2000); // Reset to default
@@ -214,7 +215,7 @@ const BookInfo: React.FC<BookInfoProps> = ({ isbn }) => {
                   </p>
                 )}
                 <div>
-                  <strong>Rating:</strong> {(bookData?.ratings.average).toFixed(2)} <br />
+                  <strong>Rating:</strong> {(bookData?.ratings?.average ?? 0).toFixed(2)} <br />
                   <Rating
                     value={userRating}
                     onChange={(event, newValue) => {
